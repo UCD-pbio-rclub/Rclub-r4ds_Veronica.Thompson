@@ -1,0 +1,60 @@
+---
+title: "mpg.practice"
+author: "Veronica"
+date: "4/24/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## MPG dataset practice
+#### 3.2 First Steps
+
+```{r}
+mpg
+```
+
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping =aes(x = displ, y = hwy))
+```
+##### 3.2 Exercises
+**1. Run "ggplot(data = mpg)" what do you see?**
+```{r}
+ggplot(data = mpg)
+```
+
+This renders a blank coordinate plane. The mapping and graphing layer were not defined.  
+
+**2. How many rows are in mtcars? How many columns?**
+
+There are `r nrow(mtcars)` rows and `r ncol(mtcars)` columns in mtcars.  
+
+**3. What does the drv variable describe? Read the help for ?mpg to find out.**
+```{r}
+?mpg
+```
+
+according to the mpg help file drv described the drive of the car such that "f = front-wheel drive, r = rear wheel drive, 4 = 4wd".  
+
+**4. Make a scatterplot of hwy vs cyl.**
+```{r}
+ggplot (data = mpg) +
+  geom_point(mapping = aes(x = cyl, y = hwy))
+```
+
+**5. What happens if you make a scatterplot of class vs drv. Why is the plot not useful?**
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = drv, y = class))
+```
+Drive and class are two fields that are used to describe the data, therefore they do not influence one another and will not yeild useful data when compared. 
+
+
+
+#### 3.3 Aesthetic mappings
+
