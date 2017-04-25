@@ -11,7 +11,7 @@ library(tidyverse)
 ```
 
 ## MPG dataset practice
-#### 3.2 First Steps
+### 3.2 First Steps
 
 ```{r}
 mpg
@@ -22,24 +22,25 @@ mpg
 ggplot(data = mpg) +
   geom_point(mapping =aes(x = displ, y = hwy))
 ```
-##### 3.2 Exercises
+
+### 3.2 Exercises  
 **1. Run "ggplot(data = mpg)" what do you see?**
 ```{r}
 ggplot(data = mpg)
 ```
 
-This renders a blank coordinate plane. The mapping and graphing layer were not defined.  
+This renders a blank coordinate plane. The graphing layer and mapping were not defined.  
 
 **2. How many rows are in mtcars? How many columns?**
 
-There are `r nrow(mtcars)` rows and `r ncol(mtcars)` columns in mtcars.  
+There are `r nrow(mtcars)` rows and `r ncol(mtcars)` columns in mtcars. (inline coding used)  
 
 **3. What does the drv variable describe? Read the help for ?mpg to find out.**
 ```{r}
 ?mpg
 ```
 
-according to the mpg help file drv described the drive of the car such that "f = front-wheel drive, r = rear wheel drive, 4 = 4wd".  
+According to the mpg help file drv describes the drive of the car such that "f = front-wheel drive, r = rear wheel drive, 4 = 4wd".  
 
 **4. Make a scatterplot of hwy vs cyl.**
 ```{r}
@@ -52,9 +53,74 @@ ggplot (data = mpg) +
 ggplot(data = mpg) +
   geom_point(mapping = aes(x = drv, y = class))
 ```
-Drive and class are two fields that are used to describe the data, therefore they do not influence one another and will not yeild useful data when compared. 
+Drive and class are two fields that are used to describe the data, therefore they do not influence one another and will not yield useful insight when compared. 
 
 
 
-#### 3.3 Aesthetic mappings
+
+### 3.3 Aesthetic mappings
+
+#### 3.3 Exercises
+**1. What’s gone wrong with this code? Why are the points not blue?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+In order to make change the color of the points to blue, the aesthetic value color must appear _outside_ of the aesthetic parens, as show below.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+**2. Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the documentation for the dataset). How can you see this information when you run mpg?**  
+To determine which variables in mpg are continuous and which are categorical we can examine the summary of mpg
+```{r}
+summary(mpg)
+```
+The variables manufacturer, model, trans, drv, fl, and class are categorical.
+The variables displ, year, cly, cty, and hwy are continuous. 
+
+**3. Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = cty))
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, size = cty))
+#ggplot(data = mpg) + 
+  #geom_point(mapping = aes(x = displ, y = hwy, shape = cty))
+# will not plot
+
+```
+Continuous data will be scaled on a gradient for color and size but not plot if assigned to shape. 
+
+**4. What happens if you map the same variable to multiple aesthetics?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = cyl, size = cyl))
+```
+The variable will be plotted using both aesthetics.
+
+**5. What does the stroke aesthetic do? What shapes does it work with?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, stroke = 1))
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, stroke = 5))
+```
+The stroke aesthetic changes the size of the shapes in geom_point. It seems that stroke will apply to all values for shape between 1-25. 
+
+**6. What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = displ < 5))
+```
+Setting an aesthetic to a value besides a variable name will plot the aesthetic accoridng to that qualifier. In the example above color is plotted between two classes, data where displ >5 and < 5. 
+
+
+## 3.5 Facets
+### 3.5 Exercises
+
+
 
