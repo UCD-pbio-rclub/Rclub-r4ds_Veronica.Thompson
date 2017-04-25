@@ -23,7 +23,7 @@ ggplot(data = mpg) +
   geom_point(mapping =aes(x = displ, y = hwy))
 ```
 
-### 3.2 Exercises  
+#### 3.2 Exercises  
 **1. Run "ggplot(data = mpg)" what do you see?**
 ```{r}
 ggplot(data = mpg)
@@ -119,8 +119,51 @@ ggplot(data = mpg) +
 Setting an aesthetic to a value besides a variable name will plot the aesthetic accoridng to that qualifier. In the example above color is plotted between two classes, data where displ >5 and < 5. 
 
 
-## 3.5 Facets
-### 3.5 Exercises
+### 3.5 Facets
+#### 3.5 Exercises
 
+**1. What happens if you facet on a continuous variable?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap( ~ cty, nrow = 2)
+```
+If a continuous variable is used to facet the data will be faceted according to the individual values in that variable. 
+
+**2. What do the empty cells in plot with facet_grid(drv ~ cyl) mean? How do they relate to this plot?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl)) + 
+  facet_grid(drv ~ cyl)
+```
+The empty grids in this plot indicate that there is no data that falls into both variables that are defined as facets. For example, there are no observations for which drv = 4 and cyl = 5. For this data set it is useful to see which combinations are not represented in the observations. 
+
+**3. What plots does the following code make? What does . do?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+Both graphs complare engine displacement and highway gas mileage but facet that data different. The first facets data by drive vertically while the second facets by numebr of cylinders horizontally. The "." acts as a placeholder in the function facet_grid() so that it may be used like facet_wrap() to facet data using one variable.   
+
+**4. Take the first faceted plot in this section (included below). What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?**
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+Using facet instead of color aesthetic to visualize the data can make trends within a variable more clear, but hide overarching trends in the entire data set. In a loarger data set it might be more benficial to facet the data to analyze trends in individual variables, and less important to use the color aesthetic to see overarching trends.  
+
+**5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol variables?**
+
+nrow and ncol define the number of rows or colums, and the direction, by hwich the data is faceted. as.table can also be used to change the layout of panels. In facet_grid(), nrow and ncol are defined by the variables used to define facets, with "." indicating one row or column. 
+
+**6. When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?**
+
+Puting the variable with the most unique number of levels in the rows can result in an oddly shaped figured. 
 
 
