@@ -33,6 +33,7 @@ show.legend = FALSE will hide the legend. if removed from a line of code the leg
 The se argument determines whether or not the standard error lines will be included in the graph. when se = FALSE they will not be included. The default is se = TRUE
 
 **5. Will these two graphs look different? Why/why not?**  
+
 **ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +** 
   **geom_point() + **
   **geom_smooth()**
@@ -115,15 +116,17 @@ geom_bar graphs the number of cases in each class while geom_col() allows you to
 
 
 **4. What variables does stat_smooth() compute? What parameters control its behaviour?**   
-stat_smooth() computes ymin, ymax, and se.  It is cacluated based on the method, formula provided, span, and level of confidence provided in the arguments
+stat_smooth() computes ymin, ymax, and se.  It is cacluated based on the method, formula provided, span, and level of confidence provided in the arguments.
 
 **5. In our proportion bar chart, we need to set group = 1. Why? In other words what is the problem with these two graphs?**
 
 ```{r}
 ggplot(data = diamonds) + 
-  geom_bar(mapping = aes(x = cut, y = ..prop.., group = 1))
+  geom_bar(mapping = aes(x = cut, y = ..prop..))
 ggplot(data = diamonds) + 
   geom_bar(mapping = aes(x = cut, fill = color, y = ..prop..))
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = ..prop.., group = 1))
 ```
 _not entirely sure what is happening here_
 
@@ -141,7 +144,7 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 ```
 
 **2. What parameters to geom_jitter() control the amount of jittering?**  
-width and height are arguments that can change the amount of jitter in the plot
+Width and height are arguments that can change the amount of jitter in the plot.
 ```{r}
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
   geom_jitter(width = 2)
@@ -157,7 +160,7 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 ```
 
 **4. What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.**  
-The default position for geom_boxplot() is "dodge"
+The default position for geom_boxplot() is "dodge".
 ```{r}
 ggplot(data = mpg, mapping = aes(x= class, y = hwy, fill = drv)) +
   geom_boxplot()
@@ -177,7 +180,7 @@ ggplot(data = mpg, mapping = aes(x = class, fill = drv)) +
 ```
 
 
-**2. What does labs() do? Read the documentation.**
+**2. What does labs() do? Read the documentation.**  
 labs() is used to change the labels of the plot. 
 
 **3. What’s the difference between coord_quickmap() and coord_map()?**  
