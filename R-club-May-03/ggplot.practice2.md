@@ -5,7 +5,7 @@ Veronica
 
 ### Data Visualization
 
-####3.6 Geometric Objects
+#### 3.6 Geometric Objects
 
 **1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?**  
 geom_line(), geom_boxplot(), geom_histogram(), geom_area()
@@ -274,7 +274,6 @@ ggplot(data = mpg, mapping = aes(x = class, fill = drv)) +
 
 ![](ggplot.practice2_files/figure-html/unnamed-chunk-16-2.png)<!-- -->
 
-
 **2. What does labs() do? Read the documentation.**  
 labs() is used to change the labels of the plot. 
 
@@ -296,7 +295,7 @@ This lot indicates that gas highway gas mileage and city gas mileage are positiv
 
 ### Workflow: basics
 
-####4.4 Exercises
+#### 4.4 Exercises
 
 **1. Why does this code not work?**  
 There is a typo in the second line. R requires that variable names match exactly.
