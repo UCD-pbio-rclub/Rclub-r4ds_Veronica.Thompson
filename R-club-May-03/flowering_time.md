@@ -1,0 +1,33 @@
+# R-club-ELF3_plot
+Veronica  
+5/3/2017  
+
+
+
+##ELF3 homozygous mutant flowering time phenotypes  
+First, load and format data:
+
+```r
+raw.flower <- read.csv("ELF3_flowering.csv")
+flwr <- raw.flower[raw.flower$ugly!=TRUE, ]
+flwr$genotype <- relevel(flwr$genotype, ref = "GV_WT")
+
+flwr$days.p <- as.Date(as.character(flwr$petals), format="%d/%m/%Y")-
+  as.Date(as.character(flwr$germ), format="%d/%m/%Y")
+flwr$days.p <- as.numeric(flwr$days.p)
+```
+
+Then plot:
+
+```r
+flower.pg <- ggplot(flwr, aes(genotype, days.p))
+flower.pg + geom_boxplot() +
+  geom_point() +
+  ggtitle("Days to petal emergence") + 
+  xlab("Genotype") + 
+  ylab("Days") +
+  theme(plot.title = element_text(hjust = .5)) 
+```
+
+![](flowering_time_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
