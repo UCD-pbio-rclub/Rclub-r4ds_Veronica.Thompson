@@ -1,0 +1,15 @@
+---
+title: "Data.Transformation.1"
+author: "Veronica"
+date: "5/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(nycflights13)
+```
+### Data Transformation
+
+#### 5.2 Filter
