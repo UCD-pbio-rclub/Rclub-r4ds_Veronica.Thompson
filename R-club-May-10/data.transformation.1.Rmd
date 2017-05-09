@@ -2,7 +2,9 @@
 title: "Data.Transformation.1"
 author: "Veronica"
 date: "5/7/2017"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -13,3 +15,41 @@ library(nycflights13)
 ### Data Transformation
 
 #### 5.2 Filter
+
+**1. Find all flights that for the following**  
+Had an arrival delay of two or more hours  
+```{r}
+filter(flights, arr_delay >= 120)
+```
+
+Flew to Houston (IAH or HOU)  
+```{r}
+filter(flights, dest == "IAH" | dest == "HOU")
+```
+
+Were operated by United, American, or Delta
+```{r}
+filter(flights, carrier %in% c("UA", "AA", "DL"))
+```
+
+Departed in summer (July, August, and September)
+```{r}
+filter(flights, month %in% c(7:9))
+```
+
+Arrived more than two hours late, but didn’t leave late
+```{r}
+filter(flights, dep_delay <=0 & arr_delay >= 120)
+```
+
+Were delayed by at least an hour, but made up over 30 minutes in flight
+```{r}
+filter(flights, dep_delay >= 60 & dep_delay-arr_delay >=30)
+```
+
+Departed between midnight and 6am (inclusive)
+```{r}
+filter(flights, dep_time %in% c(0000:0600))
+```
+
+**2. Another useful dplyr filtering helper is between(). What does it do? Can you use it to simplify the code needed to answer the previous challenges?**
