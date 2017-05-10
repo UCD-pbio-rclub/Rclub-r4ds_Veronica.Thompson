@@ -14,7 +14,7 @@ library(nycflights13)
 ```
 ### Data Transformation
 
-#### 5.2 Filter
+#### 5.2 Filter rows with filter()
 
 **1. Find all flights that for the following**  
 Had an arrival delay of two or more hours  
@@ -52,4 +52,78 @@ Departed between midnight and 6am (inclusive)
 filter(flights, dep_time %in% c(0000:0600))
 ```
 
-**2. Another useful dplyr filtering helper is between(). What does it do? Can you use it to simplify the code needed to answer the previous challenges?**
+**2. Another useful dplyr filtering helper is between(). What does it do? Can you use it to simplify the code needed to answer the previous challenges?**  
+between() filters data by variables that fall between two values. if could have been used to filter flights that left between midnight and 6am, or summer flights.
+
+**3. How many flights have a missing dep_time? What other variables are missing? What might these rows represent?** 
+```{r}
+filter(flights, is.na(dep_time))
+```  
+8,255 flights have NA in the depature time variable. Departure delay, arrival time ,arrival delay and  air time can have missing variables. The flights with these missing values were likely canceled. 
+
+**4. Why is NA ^ 0 not missing? Why is NA | TRUE not missing? Why is FALSE & NA not missing? Can you figure out the general rule? (NA * 0 is a tricky counterexample!)**  
+
+
+#### 5.3 Arrange rows with arrange()
+
+**1. How could you use arrange() to sort all missing values to the start? (Hint: use is.na())**  
+```{r}
+arrange(flights, desc(is.na(dep_time), is.na(arr_time)))
+```
+
+**2. Sort flights to find the most delayed flights. Find the flights that left earliest.**  
+```{r}
+arrange(flights , desc(dep_delay))
+arrange(flights, dep_delay)
+```
+
+**3. Sort flights to find the fastest flights.**
+```{r}
+arrange(flights, air_time)
+```
+
+**4. Which flights travelled the longest? Which travelled the shortest?**
+```{r}
+arrange(flights, desc(distance))
+arrange(flights, distance)
+```
+
+#### 5.4 Select columns with select()
+
+**1. Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights.**
+```{r}
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+select(flights, 4, 6, 7, 9)
+select(flights, dep_time, arr_time, ends_with("delay"))
+```
+
+**2. What happens if you include the name of a variable multiple times in a select() call?**
+```{r}
+select(flights, arr_time, arr_time)
+```  
+The resulting data frame (or tibble) will have the called variable only once.
+
+**3. What does the one_of() function do? Why might it be helpful in conjunction with this vector?**
+```{r}
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+select(flights, one_of(vars))
+```
+one_of() is a select helper that allows you to select all of the variables included in a character vector. 
+
+**4. Does the result of running the following code surprise you? How do the select helpers deal with case by default? How can you change that default?**  
+```{r}
+select(flights, contains("TIME"))
+```
+select() ignores case of the arguments by default. To chnage the default ignore.case = FALSE must be passed as an argument
+
+#### 5.5 Add new variables with mutate()
+
+
+
+
+
+
+
+
+
+
