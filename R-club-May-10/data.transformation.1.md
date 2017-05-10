@@ -225,7 +225,7 @@ filter(flights, is.na(dep_time))
 
 #### 5.3 Arrange rows with arrange()
 
-** 1. How could you use arrange() to sort all missing values to the start? (Hint: use is.na())**  
+**1. How could you use arrange() to sort all missing values to the start? (Hint: use is.na())**  
 
 ```r
 arrange(flights, desc(is.na(dep_time), is.na(arr_time)))
@@ -519,12 +519,155 @@ select() ignores case of the arguments by default. To chnage the default ignore.
 
 #### 5.5 Add new variables with mutate()
 
+**1. Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.**  
+hour = dep_time %/% 100,
+  minute = dep_time %% 100
 
+```r
+flights2 <- mutate(flights, 
+       dep_time_min = dep_time %/% 100 *60 + dep_time %% 100,
+       sched_dep_time_min = sched_dep_time %/% 100 *60 + sched_dep_time %% 100)
+select(flights2, dep_time, dep_time_min, sched_dep_time, sched_dep_time_min)
+```
 
+```
+## # A tibble: 336,776 × 4
+##    dep_time dep_time_min sched_dep_time sched_dep_time_min
+##       <int>        <dbl>          <int>              <dbl>
+## 1       517          317            515                315
+## 2       533          333            529                329
+## 3       542          342            540                340
+## 4       544          344            545                345
+## 5       554          354            600                360
+## 6       554          354            558                358
+## 7       555          355            600                360
+## 8       557          357            600                360
+## 9       557          357            600                360
+## 10      558          358            600                360
+## # ... with 336,766 more rows
+```
 
+**2. Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it?**  
 
+```r
+flights3 <- mutate(flights, arr_diff = arr_time -dep_time)
+select(flights3, air_time, arr_diff)
+```
 
+```
+## # A tibble: 336,776 × 2
+##    air_time arr_diff
+##       <dbl>    <int>
+## 1       227      313
+## 2       227      317
+## 3       160      381
+## 4       183      460
+## 5       116      258
+## 6       150      186
+## 7       158      358
+## 8        53      152
+## 9       140      281
+## 10      138      195
+## # ... with 336,766 more rows
+```
+The two values should be the same, however arr_time and dep_time are not listed in minutes past midnight and cannot be used to calculate air_time in this way. Instead, use the departure and arrival times in minutes past midnight as calculated in the first problem.  
 
+```r
+flights4 <- mutate(flights, 
+       dep_time_min = dep_time %/% 100 *60 + dep_time %% 100,
+       arr_time_min = arr_time %/% 100 *60 + arr_time %% 100, 
+       diff = arr_time_min - dep_time_min)
+select(flights4, air_time, diff)       
+```
+
+```
+## # A tibble: 336,776 × 2
+##    air_time  diff
+##       <dbl> <dbl>
+## 1       227   193
+## 2       227   197
+## 3       160   221
+## 4       183   260
+## 5       116   138
+## 6       150   106
+## 7       158   198
+## 8        53    72
+## 9       140   161
+## 10      138   115
+## # ... with 336,766 more rows
+```
+Not sure why thse still don't match....
+
+**3. Compare dep_time, sched_dep_time, and dep_delay. How would you expect those three numbers to be related?**  
+
+```r
+select(flights, dep_time : dep_delay)
+```
+
+```
+## # A tibble: 336,776 × 3
+##    dep_time sched_dep_time dep_delay
+##       <int>          <int>     <dbl>
+## 1       517            515         2
+## 2       533            529         4
+## 3       542            540         2
+## 4       544            545        -1
+## 5       554            600        -6
+## 6       554            558        -4
+## 7       555            600        -5
+## 8       557            600        -3
+## 9       557            600        -3
+## 10      558            600        -2
+## # ... with 336,766 more rows
+```
+Dep_delay should be the difference between departure time and scheduled departure time. This is trues for differences of less than one hour. dep_time and scheduled departure time are formatted such that subtracting the two will not give the correct value for differences over an hour. Instead, minutes past midnight format should be used to do this calculation.
+
+**4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank().**
+
+```r
+(x <- arrange(flights, min_rank(desc(dep_delay))))
+```
+
+```
+## # A tibble: 336,776 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time
+##    <int> <int> <int>    <int>          <int>     <dbl>    <int>
+## 1   2013     1     9      641            900      1301     1242
+## 2   2013     6    15     1432           1935      1137     1607
+## 3   2013     1    10     1121           1635      1126     1239
+## 4   2013     9    20     1139           1845      1014     1457
+## 5   2013     7    22      845           1600      1005     1044
+## 6   2013     4    10     1100           1900       960     1342
+## 7   2013     3    17     2321            810       911      135
+## 8   2013     6    27      959           1900       899     1236
+## 9   2013     7    22     2257            759       898      121
+## 10  2013    12     5      756           1700       896     1058
+## # ... with 336,766 more rows, and 12 more variables: sched_arr_time <int>,
+## #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+## #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+## #   minute <dbl>, time_hour <dttm>
+```
+the ties method is "min" in rank_min by default. 
+
+**5. What does 1:3 + 1:10 return? Why?**  
+
+```r
+1:3 + 1:10
+```
+
+```
+## Warning in 1:3 + 1:10: longer object length is not a multiple of shorter
+## object length
+```
+
+```
+##  [1]  2  4  6  5  7  9  8 10 12 11
+```
+The error is returned because the vectors are not the same length, and the longer vector length is not divisible by the shorter vector length. Generally the small vctore will repeat until the longer vector is exhausted but an error is returned if the lengths will not be exhautsed at the same time. 
+
+**6. What trigonometric functions does R provide?**  
+The trig functions can be found under ?cos().
+ 
 
 
 
