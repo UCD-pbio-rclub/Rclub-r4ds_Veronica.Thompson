@@ -3,7 +3,8 @@ title: "EDA.1"
 author: "Veronica"
 date: "5/22/2017"
 output:
-  html_document: default
+  html_document: 
+    keep_md: yes
   html_notebook: default
 ---
 
@@ -177,6 +178,7 @@ diamonds %>%
   geom_boxplot() +
   coord_flip()
 ```   
+
 Using coord_flip() takes the arguments passed for a vertical graph and inverts everything. ggstance allows you  to supply arguments for the horizontal plot in the way that they will be presented in the graph   
 in ggstance, x = x variable, y = y variable in horizontal plot  
 coord_flip(), x = y variable, y = x variable in horizontal plot
@@ -243,6 +245,7 @@ diamonds %>%
   geom_tile(mapping = aes(fill = n)) + 
   scale_fill_gradient(low="blue", high="red")
 ```  
+
 The former is better aesthetically because there are more categories in color than cut. More columns is prettier than more rows. 
 
 ##### 7.5.3 Two continuous variables
@@ -255,6 +258,7 @@ When using cut_width() there is no indication of the number of observations in e
 ggplot(data = diamonds, mapping = aes(x = price, y = carat)) +
   geom_boxplot(mapping = aes(group = cut_number(price, 20)))
 ```   
+
 
 **3. How does the price distribution of very large diamonds compare to small diamonds. Is it as you expect, or does it surprise you?**
 

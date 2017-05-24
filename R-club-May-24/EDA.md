@@ -376,6 +376,7 @@ diamonds %>%
 ```
 
 ![](EDA_files/figure-html/unnamed-chunk-10-3.png)<!-- -->
+
 Using coord_flip() takes the arguments passed for a vertical graph and inverts everything. ggstance allows you  to supply arguments for the horizontal plot in the way that they will be presented in the graph   
 in ggstance, x = x variable, y = y variable in horizontal plot  
 coord_flip(), x = y variable, y = x variable in horizontal plot
