@@ -4,6 +4,7 @@ author: "Veronica"
 date: "5/22/2017"
 output:
   html_document: 
+    fig_caption: yes
     keep_md: yes
   html_notebook: default
 ---
@@ -153,6 +154,7 @@ diamonds %>%
   ggplot(mapping = aes(x = table, y = price), stat = "count") + 
   geom_point()
 ```  
+
 Carat seems to be the most strongly coordinated characteristic with price.
 
 ```{r}

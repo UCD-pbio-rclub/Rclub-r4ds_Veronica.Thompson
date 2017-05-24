@@ -319,6 +319,7 @@ diamonds %>%
 ```
 
 ![](EDA_files/figure-html/unnamed-chunk-8-7.png)<!-- -->
+
 Carat seems to be the most strongly coordinated characteristic with price.
 
 
