@@ -478,6 +478,7 @@ diamonds %>%
 ```
 
 ![](EDA_files/figure-html/unnamed-chunk-15-2.png)<!-- -->
+
 The former is better aesthetically because there are more categories in color than cut. More columns is prettier than more rows. 
 
 ##### 7.5.3 Two continuous variables
@@ -493,6 +494,7 @@ ggplot(data = diamonds, mapping = aes(x = price, y = carat)) +
 ```
 
 ![](EDA_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+
 
 **3. How does the price distribution of very large diamonds compare to small diamonds. Is it as you expect, or does it surprise you?**
 
