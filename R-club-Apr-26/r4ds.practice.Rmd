@@ -81,6 +81,7 @@ To determine which variables in mpg are continuous and which are categorical we 
 ```{r}
 summary(mpg)
 ```
+
 The variables manufacturer, model, trans, drv, fl, and class are categorical.
 The variables displ, year, cly, cty, and hwy are continuous. 
 

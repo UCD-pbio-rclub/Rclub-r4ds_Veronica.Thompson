@@ -500,7 +500,7 @@ ggplot(data = diamonds, mapping = aes(x = price, y = carat)) +
 
 **3. How does the price distribution of very large diamonds compare to small diamonds. Is it as you expect, or does it surprise you?**
 
-
+large v small
 
 
 

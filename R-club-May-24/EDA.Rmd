@@ -4,16 +4,14 @@ author: "Veronica"
 date: "5/22/2017"
 output:
   html_document: 
-    fig_caption: yes
     keep_md: yes
   html_notebook: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.show = "asis")
 library(tidyverse)
 library(nycflights13)
-library(hexbin)
 ```
 
 ## 7. Exploratory Data Analysis
@@ -165,7 +163,7 @@ diamonds %>%
 Cut and carat are not coorelated but carat is positively coorelated with price. Diamonds with poor cuts can be expensive if they are high carat, and ideal cut diamonds can be inexpensive due to low carat size.
 
 **3. Install the ggstance package, and create a horizontal boxplot. How does this compare to using coord_flip()?**  
-```{r}
+```{r, echo=TRUE}
 library(ggstance)
 diamonds %>%
   ggplot(mapping = aes(x = color, y = price)) + 
@@ -264,7 +262,7 @@ ggplot(data = diamonds, mapping = aes(x = price, y = carat)) +
 
 **3. How does the price distribution of very large diamonds compare to small diamonds. Is it as you expect, or does it surprise you?**
 
-
+large v small
 
 
 
