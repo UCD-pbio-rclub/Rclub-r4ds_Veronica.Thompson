@@ -44,24 +44,26 @@ tib[, "xyz"]
 
 df[, c("abc", "xyz")]
 tib[, c("abc", "xyz")]
-#the tible includes the variable type.
+#returns values as tibble
 ```
 
 **3. If you have the name of a variable stored in an object, e.g. var <- "mpg", how can you extract the reference variable from a tibble?**  
 ```{r}
 var <- "mpg"
+cars <- as_tibble(mtcars)
 
-mtcars %>% 
-  as_tibble() %>% 
+cars[[var]]
+
+cars$mpg
+
+cars[["mpg"]]
+#two sets of brackets returns a vector is a vector
+
+cars %>% 
   .[[var]]
 
-mtcars %>% 
-  as_tibble() %>% 
-  .$mpg
-
-mtcars %>% 
-  as_tibble() %>% 
-  .[["mpg"]]
+##suggestion a la Julin
+get(var, cars)
 ```  
 $ extracts by name and is not compatable with stored variables. .[[var]] will extract the variable stored in var, but if searching for a variable by name quotes must be used.
 
@@ -73,7 +75,7 @@ annoying <- tibble(
 )
 
 #Extracting the variable called 1.
-annoying[[1]]
+annoying$`1`
 
 #Plotting a scatterplot of 1 vs 2.
 ggplot(annoying, aes(`1`, `2`)) +
