@@ -226,7 +226,8 @@ Not sure how to do this one, but I did change the color...
 ```{r}
 flights %>%
   group_by(month, dest) %>%
-  summarise(dep_delay = mean(dep_delay, na.rm = TRUE)) %>%
+  summarise(dep_delay = mean(dep_delay, na.rm = TRUE), n = n()) %>%
+  filter(n >=52) %>% 
   ggplot(mapping = aes(x = factor(month), y = dest)) +
   geom_tile(mapping = aes(fill = dep_delay))
 ```  

@@ -22,12 +22,20 @@ library(lubridate)
 *A flight is 30 minutes early 50% of the time, and 30 minutes late 50% of the time.  
 *99% of the time a flight is on time. 1% of the time it’s 2 hours late.  
 
+```{r}
+not_cancelled %>%
+  group_by(flight) %>%
+  summarize(early_15_min = mean(arr_delay == -15), late_15_min = mean(arr_delay == 15)) %>%
+  filter(early_15_min == .5 & late_15_min == .5)
+```
+
 **2. Come up with another approach that will give you the same output as not_cancelled %>% count(dest) and not_cancelled %>% count(tailnum, wt = distance) (without using count()).**
 
 ```{r}
 not_cancelled <- flights %>% 
   filter(!is.na(dep_delay), !is.na(arr_delay))
 not_cancelled %>% count(dest)
+
 not_cancelled %>% count(tailnum, wt = distance)
 
 not_cancelled %>%
@@ -42,7 +50,7 @@ not_cancelled %>%
 
 **3. Our definition of cancelled flights (is.na(dep_delay) | is.na(arr_delay) ) is slightly suboptimal. Why? Which is the most important column?**
 
-Flghts that departed by did not arrive indicated tha tthe flights did safely reach their destination. Coding it this way allows more room for typing errors. dep_delay is more important here, so is.na(dep_delay) can be used instead.
+Flghts that departed but did not arrive indicated that the flights did safely reach their destination. Coding it this way also allows more room for typing errors. dep_delay is more important here, so is.na(dep_delay) can be used instead.
 
 **4. Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?**   
 ```{r}
@@ -59,7 +67,8 @@ flights %>%
   summarise(proportion_canceled = sum(is.na(dep_time)/n()),
             ave_arr_delay = mean(arr_delay, na.rm = TRUE)) %>%
   ggplot(aes(x = proportion_canceled, y = ave_arr_delay)) + 
-  geom_point()
+  geom_point() +
+  geom_smooth()
 ```  
 The proportion of delayed flights and average arival delay are positively correlated.
 
@@ -67,10 +76,10 @@ The proportion of delayed flights and average arival delay are positively correl
 ```{r}
 flights %>% 
   group_by(carrier) %>%
-  summarize(ave_arrival_delay = mean(arr_delay, na.rm = TRUE), n = n()) %>%
-  arrange(desc(ave_arrival_delay))
+  summarize(ave_arrival_delay = mean(arr_delay, na.rm = TRUE), n = n(), proportion_delay = mean(arr_delay >0, na.rm =TRUE)) %>%
+  arrange(desc(proportion_delay))
 ```  
-Frontier Airlines has the longest average arrival delay but a relatively small number of flights compared to most of the carriers.
+Frontier Airlines has the longest average arrival delay but a relatively small number of flights compared to most of the carriers. AirTran has the highest proportion of delayed flights.
 
 **What does the sort argument to count() do. When might you use it?**  
 The sort argument in count() will arrange the data in descending order based on count(). 
@@ -85,6 +94,11 @@ not_cancelled %>%
   group_by(tailnum) %>%
   summarize(proportion_delay = sum(arr_delay > 0)/n()) %>%
   arrange(desc(proportion_delay))
+not_cancelled %>%
+  group_by(tailnum) %>%
+  summarize(proportion_delay = mean(arr_delay > 0), ave_delay = mean(arr_delay)) %>%
+  arrange(desc(proportion_delay))
+
 ```
 There are many planes that are always delayed.
 
@@ -100,10 +114,13 @@ not_cancelled %>%
 
 **4. For each destination, compute the total minutes of delay. For each, flight, compute the proportion of the total delay for its destination.**  
 ```{r}
-#not_cancelled %>%
-#  filter(dest) %>%
-#  group_by(flight) %>%
-#  summarize(flight_delay = sum(arr_delay)) 
+not_cancelled %>%
+  group_by(dest) %>%
+  mutate(dest_delay = sum(arr_delay)) %>%
+  group_by(carrier, flight) %>%
+  summarize()
+  summarize(prop_of_delay = arr_delay/dest_delay)
+
 not_cancelled %>%
   group_by(tailnum, dest) %>%
   summarize(flight_delay = sum(arr_delay))
@@ -132,12 +149,11 @@ lost here too...
 flights %>%
   group_by(dest) %>%
   summarize(num_carriers = n_distinct(carrier)) %>%
-  filter(num_carriers >= 2)
+  filter(num_carriers >= 2) 
 ```  
 Not sure how to rank.
 
 **8. For each plane, count the number of flights before the first delay of greater than 1 hour.**
-
 
 
 

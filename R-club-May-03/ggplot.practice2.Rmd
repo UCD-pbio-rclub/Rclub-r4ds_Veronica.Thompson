@@ -2,7 +2,9 @@
 title: "ggplot.2"
 author: "Veronica"
 date: "5/2/2017"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +13,7 @@ library(ggplot2)
 ```
 ### Data Visualization
 
-####3.6 Geometric Objects
+#### 3.6 Geometric Objects
 
 **1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?**  
 geom_line(), geom_boxplot(), geom_histogram(), geom_area()
@@ -84,7 +86,7 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 _Plot 6_  
 ```{r}
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
-  geom_point(mapping = aes(fill = drv), color = "white", shape = 21)
+  geom_point(mapping = aes(fill = drv), color = "white", stroke = 2, shape = 21)
 ```
 
 ####3.7 Statistical Transformations
@@ -179,7 +181,6 @@ ggplot(data = mpg, mapping = aes(x = class, fill = drv)) +
   coord_polar()
 ```
 
-
 **2. What does labs() do? Read the documentation.**  
 labs() is used to change the labels of the plot. 
 
@@ -198,7 +199,7 @@ This lot indicates that gas highway gas mileage and city gas mileage are positiv
 
 ### Workflow: basics
 
-####4.4 Exercises
+#### 4.4 Exercises
 
 **1. Why does this code not work?**  
 There is a typo in the second line. R requires that variable names match exactly.

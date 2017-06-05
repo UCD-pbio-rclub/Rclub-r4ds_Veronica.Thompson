@@ -2,7 +2,9 @@
 title: "R-club-ELF3_plot"
 author: "Veronica"
 date: "5/3/2017"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}

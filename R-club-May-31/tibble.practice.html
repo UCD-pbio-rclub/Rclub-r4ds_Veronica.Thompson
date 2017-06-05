@@ -212,25 +212,32 @@ df[, c(&quot;abc&quot;, &quot;xyz&quot;)]</code></pre>
 ##     abc    xyz
 ##   &lt;dbl&gt; &lt;fctr&gt;
 ## 1     1      a</code></pre>
-<pre class="r"><code>#the tible includes the variable type.</code></pre>
+<pre class="r"><code>#returns values as tibble</code></pre>
 <p><strong>3. If you have the name of a variable stored in an object, e.g. var &lt;- “mpg”, how can you extract the reference variable from a tibble?</strong></p>
 <pre class="r"><code>var &lt;- &quot;mpg&quot;
+cars &lt;- as_tibble(mtcars)
 
-mtcars %&gt;% 
-  as_tibble() %&gt;% 
+cars[[var]]</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
+## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
+## [29] 15.8 19.7 15.0 21.4</code></pre>
+<pre class="r"><code>cars$mpg</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
+## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
+## [29] 15.8 19.7 15.0 21.4</code></pre>
+<pre class="r"><code>cars[[&quot;mpg&quot;]]</code></pre>
+<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
+## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
+## [29] 15.8 19.7 15.0 21.4</code></pre>
+<pre class="r"><code>#two sets of brackets returns a vector is a vector
+
+cars %&gt;% 
   .[[var]]</code></pre>
 <pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
 ## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
 ## [29] 15.8 19.7 15.0 21.4</code></pre>
-<pre class="r"><code>mtcars %&gt;% 
-  as_tibble() %&gt;% 
-  .$mpg</code></pre>
-<pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
-## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
-## [29] 15.8 19.7 15.0 21.4</code></pre>
-<pre class="r"><code>mtcars %&gt;% 
-  as_tibble() %&gt;% 
-  .[[&quot;mpg&quot;]]</code></pre>
+<pre class="r"><code>##suggestion a la Julin
+get(var, cars)</code></pre>
 <pre><code>##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2
 ## [15] 10.4 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4
 ## [29] 15.8 19.7 15.0 21.4</code></pre>
@@ -242,7 +249,7 @@ mtcars %&gt;%
 )
 
 #Extracting the variable called 1.
-annoying[[1]]</code></pre>
+annoying$`1`</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <pre class="r"><code>#Plotting a scatterplot of 1 vs 2.
 ggplot(annoying, aes(`1`, `2`)) +
@@ -261,16 +268,16 @@ annoying2 %&gt;%
 <pre><code>## # A tibble: 10 × 3
 ##      one       two    three
 ##    &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1      1  2.902309 2.902309
-## 2      2  6.493529 3.246765
-## 3      3  7.205096 2.401699
-## 4      4  8.244604 2.061151
-## 5      5 10.049933 2.009987
-## 6      6 12.214558 2.035760
-## 7      7 13.736141 1.962306
-## 8      8 14.842382 1.855298
-## 9      9 18.872150 2.096906
-## 10    10 20.241427 2.024143</code></pre>
+## 1      1  1.669621 1.669621
+## 2      2  3.183836 1.591918
+## 3      3  6.316184 2.105395
+## 4      4  8.423169 2.105792
+## 5      5  9.381008 1.876202
+## 6      6 12.195782 2.032630
+## 7      7 14.681692 2.097385
+## 8      8 16.313582 2.039198
+## 9      9 17.306293 1.922921
+## 10    10 20.419214 2.041921</code></pre>
 <p><strong>5. What does tibble::enframe() do? When might you use it?</strong></p>
 <pre class="r"><code>x &lt;- (letters) %&gt;% 
   enframe(name = &quot;red&quot;, value = &quot;blue&quot;) %&gt;% 

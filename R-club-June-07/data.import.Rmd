@@ -1,0 +1,24 @@
+---
+title: "Data.import"
+author: "Veronica"
+date: "6/5/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Data Import
+
+#### 11.2 Exercises  
+
+**1. What function would you use to read a file where fields were separated with
+“|”?**  
+read_delim() can be used to read files if delim = "|"
+```{r}
+read_delim("R-club-June-07/delim.txt", delim = "|")
+```
+
+

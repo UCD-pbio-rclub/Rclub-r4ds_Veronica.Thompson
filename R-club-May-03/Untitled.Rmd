@@ -1,0 +1,73 @@
+---
+title: "ggplot.2"
+author: "Veronica"
+date: "5/2/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+####3.6 Geometric Objects
+
+**1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?**  
+geom_line(), geom_boxplot(), geom_histogram(), geom_area()
+
+**2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.**  
+A plot comparing displ and hwy, with all data points color coded by drv. line graphs will be also be divided by and color coded by drv.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+```
+
+**3. What does show.legend = FALSE do? What happens if you remove it?
+Why do you think I used it earlier in the chapter?**  
+show.legend = FALSE will hide the legend. if removed from a line of code the legend will be displayed in the plot. Sometimes the legend is described somewhere else or not aestheitically pleasing and can be removed. 
+
+**4. What does the se argument to geom_smooth() do?**  
+The se argument determines whether or not the standard error lines will be included in the graph. when se = FALSE they will not be included. The default is se = TRUE
+
+**5. Will these two graphs look different? Why/why not?**  
+**ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +** 
+  **geom_point() + **
+  **geom_smooth()**
+
+**ggplot() + **
+  **geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + **
+  **geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))**
+  
+These graphs will not look different. Here, two types of plots are used in the same plot area. In order to make the code easier to manipulate, the mapping aesthetics are located in the initial ggplot() command instead of in the individual plot lines. 
+
+**Recreate the R code necessary to generate the following graphs.**  
+
+Plot 1  
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() +
+  geom_smooth(se = FALSE)
+```
+
+Plot 2  
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() +
+  geom_smooth(se = FALSE, mapping = aes(group = drv))
+```
+
+Plot 3
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() +
+  geom_smooth(se = FALSE)
+```
+
+Plot 4
+```{r}
+
+```
+
+  
+  
