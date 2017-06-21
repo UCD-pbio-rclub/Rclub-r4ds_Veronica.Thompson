@@ -1,0 +1,129 @@
+---
+title: "tidy.data2"
+author: "Veronica"
+date: "6/19/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(nycflights13)
+```
+
+### 12.5 Missing Values
+
+**1. Compare and contrast the fill arguments to spread() and complete()**  
+Fill recognizes explictly missing values and fills them with the last non-missing value. Complete recognizes implicitly missing values and creates a data frame that presents them explicitly. Spread changes the organization of values in the table, which can make implicitly missing values explicitly missing if the correct variables are used to identify the data. 
+
+**2. What does the direction argument to fill() do?**  
+The .direction argument indicates weather the non-missing value above or below the missing values should be used to fill the data frame.  
+```{r}
+treatment <- tribble(
+  ~ person,           ~ treatment, ~response,
+  "Derrick Whitmore", 1,           7,
+  NA,                 2,           10,
+  NA,                 3,           9,
+  "Katherine Burke",  1,           4
+)
+treatment %>% 
+  fill(person)
+treatment %>% 
+  fill(person, .direction = "up")
+```  
+
+## 12.6 Case Study
+
+**1. In this case study I set na.rm = TRUE just to make it easier to check that we had the correct values. Is this reasonable? Think about how missing values are represented in this dataset. Are there implicit missing values? What’s the difference between an NA and zero?**  
+
+In this data frame, NAs represent explicit missing value. Excluding them from our tidy data is reasonable for data analysis, however it creates implicit missing data in out tidy data set.
+Implicit missing values would occur if a "code" combination was missing from the original data set. NAs and zeros represent different values in this data set. A zero explicitly indicates that no cases were observed for this "code", while a NA indicates that the data was not record.
+
+**2. What happens if you neglect the mutate() step? (mutate(key = stringr::str_replace(key, "newrel", "new_rel")))**
+
+The mutate step facilitates complete and uniform separate() steps in subsequent code lines despite inconsistent data input. "newrel" and "new_rel" indicate the same catagories, but would not be treated the same way by separate() without the mutate line included. 
+
+**3. I claimed that iso2 and iso3 were redundant with country. Confirm this claim.**
+
+```{r}
+who %>% 
+  select(country, iso2, iso3) %>%
+  distinct() %>% 
+  count(iso2)
+```
+
+**4. For each country, year, and sex compute the total number of cases of TB. Make an informative visualisation of the data.**  
+
+#### Cases by country  
+```{r}
+who_tidy <- who %>%
+  gather(code, value, new_sp_m014:newrel_f65, na.rm = TRUE) %>% 
+  mutate(code = stringr::str_replace(code, "newrel", "new_rel")) %>%
+  separate(code, c("new", "var", "sexage")) %>% 
+  select(-new, -iso2, -iso3) %>% 
+  separate(sexage, c("sex", "age"), sep = 1)
+
+who_c <- who_tidy %>% 
+  group_by(country) %>% 
+  summarise(total = sum(value)) 
+
+ggplot(who_c, aes(x = country, y = total)) + 
+  geom_col()
+
+summary(who_c)
+
+who_c %>% 
+  arrange(desc(total)) %>% 
+  head(n = 10) %>% 
+  ggplot(aes(x = country, y = total)) + 
+  geom_col() +
+  theme(axis.text.x=element_text(angle=90, hjust=1))
+```
+
+#### Cases by year  
+```{r}
+who_y <- who_tidy %>% 
+  group_by(year) %>% 
+  summarise(total = sum(value)) 
+
+who_y %>%   
+  ggplot(aes(x = year, y = total)) + 
+  geom_col()
+```
+
+#### Cases by sex  
+```{r}
+who_tidy %>% 
+  group_by(sex) %>% 
+  summarise(total = sum(value)) %>% 
+  ggplot(aes(x = sex, y = total)) + 
+  geom_col()
+```
+
+## 13 Relational Data  
+### 13.2 nycflights13
+
+**1. Imagine you wanted to draw (approximately) the route each plane flies from its origin to its destination. What variables would you need? What tables would you need to combine?**
+
+flights: tailum, origin, dest
+airports: faa (link to origin and dest), lat, lon
+
+**2. I forgot to draw the relationship between weather and airports. What is the relationship and how should it appear in the diagram?**
+
+The weather and flights tables are directly linked in year, month, day, hour, and origin. 
+
+**3. weather only contains information for the origin (NYC) airports. If it contained weather records for all airports in the USA, what additional relation would it define with flights?**
+
+If weather contained information for all of the airports in the US there would also be a relationship between weather origin and fligths destination.
+
+**4. We know that some days of the year are “special”, and fewer people than usual fly on them. How might you represent that data as a data frame? What would be the primary keys of that table? How would it connect to the existing tables?**
+
+```{r}
+(daily <- flights %>% 
+  unite(cal_day, year, month, day) %>%
+  group_by(cal_day) %>% 
+  summarise(count = n()))
+summary(daily)
+```
+
+From this table, year, month and day could be isolated from cal_day, or cal_day could be kept as the primary key. Other tables could be linked by the date indicators, either as separated values for each or by uniting them in the other data sets. 

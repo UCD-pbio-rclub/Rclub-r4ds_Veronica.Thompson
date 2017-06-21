@@ -23,21 +23,15 @@ read_delim("delim.txt", delim = "|")
 ##   b = col_integer(),
 ##   c = col_integer(),
 ##   d = col_integer(),
-##   f = col_character()
+##   f = col_integer()
 ## )
-```
-
-```
-## Warning: 1 parsing failure.
-## row col  expected    actual
-##   1  -- 5 columns 4 columns
 ```
 
 ```
 ## # A tibble: 1 × 5
 ##       a     b     c     d     f
-##   <int> <int> <int> <int> <chr>
-## 1     1     2     3     4  <NA>
+##   <int> <int> <int> <int> <int>
+## 1     1     2     3     4     5
 ```
 
 **2. Apart from file, skip, and comment, what other arguments do read_csv() and read_tsv() have in common?**  
