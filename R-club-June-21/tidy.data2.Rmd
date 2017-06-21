@@ -84,6 +84,16 @@ who_y <- who_tidy %>%
 who_y %>%   
   ggplot(aes(x = year, y = total)) + 
   geom_col()
+
+who_y %>% 
+  filter(year < 1995) %>% 
+  ggplot(aes(x = year, y = total)) + 
+  geom_col()
+
+who_y %>% 
+  filter(year >= 1995) %>% 
+  ggplot(aes(x = year, y = total)) + 
+  geom_col()
 ```
 
 #### Cases by sex  
