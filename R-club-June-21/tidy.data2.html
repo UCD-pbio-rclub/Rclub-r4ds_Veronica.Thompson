@@ -126,9 +126,9 @@ $(document).ready(function () {
 <div id="missing-values" class="section level3">
 <h3>12.5 Missing Values</h3>
 <p><strong>1. Compare and contrast the fill arguments to spread() and complete()</strong><br />
-Fill recognizes explictly missing values and fills them with the last non-missing value. Complete recognizes implicitly missing values and creates a data frame that presents them explicitly. Spread changes the organization of values in the table, which can make implicitly missing values explicitly missing if the correct variables are used to identify the data.</p>
+Fill recognizes explictly missing values and fills them with the last non-missing value. Complete recognizes implicitly missing values and creates a data frame that presents them explicitly. Spread changes the organization of values in the table, which can make implicitly missing values explicit if the correct variables are used to identify the data.</p>
 <p><strong>2. What does the direction argument to fill() do?</strong><br />
-The .direction argument indicates weather the non-missing value above or below the missing values should be used to fill the data frame.</p>
+The .direction argument indicates wether the non-missing value above or below the missing values should be used to fill the data frame.</p>
 <pre class="r"><code>treatment &lt;- tribble(
   ~ person,           ~ treatment, ~response,
   &quot;Derrick Whitmore&quot;, 1,           7,
@@ -158,28 +158,12 @@ treatment %&gt;%
 <div id="case-study" class="section level2">
 <h2>12.6 Case Study</h2>
 <p><strong>1. In this case study I set na.rm = TRUE just to make it easier to check that we had the correct values. Is this reasonable? Think about how missing values are represented in this dataset. Are there implicit missing values? What’s the difference between an NA and zero?</strong></p>
-<p>In this data frame, NAs represent explicit missing value. Excluding them from our tidy data is reasonable for data analysis, however it creates implicit missing data in out tidy data set. Implicit missing values would occur if a “code” combination was missing from the original data set. NAs and zeros represent different values in this data set. A zero explicitly indicates that no cases were observed for this “code”, while a NA indicates that the data was not record.</p>
+<p>In this data frame, NAs represent explicit missing value. Excluding them from our tidy data is reasonable for data analysis, however it creates implicit missing data in our tidy data set.<br />
+Implicit missing values would occur in the original data set if a “code” combination was missing.<br />
+NAs and zeros represent different values in this data set. A zero explicitly indicates that no cases were observed for this “code”, while a NA indicates that the data was not record.</p>
 <p><strong>2. What happens if you neglect the mutate() step? (mutate(key = stringr::str_replace(key, “newrel”, “new_rel”)))</strong></p>
 <p>The mutate step facilitates complete and uniform separate() steps in subsequent code lines despite inconsistent data input. “newrel” and “new_rel” indicate the same catagories, but would not be treated the same way by separate() without the mutate line included.</p>
 <p><strong>3. I claimed that iso2 and iso3 were redundant with country. Confirm this claim.</strong></p>
-<pre class="r"><code>who %&gt;% 
-  select(country, iso2, iso3) %&gt;%
-  distinct() %&gt;% 
-  count(iso2)</code></pre>
-<pre><code>## # A tibble: 219 × 2
-##     iso2     n
-##    &lt;chr&gt; &lt;int&gt;
-## 1     AD     1
-## 2     AE     1
-## 3     AF     1
-## 4     AG     1
-## 5     AI     1
-## 6     AL     1
-## 7     AM     1
-## 8     AN     1
-## 9     AO     1
-## 10    AR     1
-## # ... with 209 more rows</code></pre>
 <p><strong>4. For each country, year, and sex compute the total number of cases of TB. Make an informative visualisation of the data.</strong></p>
 <div id="cases-by-country" class="section level4">
 <h4>Cases by country</h4>
@@ -239,11 +223,12 @@ who_y %&gt;%
 <div id="nycflights13" class="section level3">
 <h3>13.2 nycflights13</h3>
 <p><strong>1. Imagine you wanted to draw (approximately) the route each plane flies from its origin to its destination. What variables would you need? What tables would you need to combine?</strong></p>
-<p>flights: tailum, origin, dest airports: faa (link to origin and dest), lat, lon</p>
+<p>flights: tailnum, origin, dest<br />
+airports: faa (link to origin and dest), lat, lon</p>
 <p><strong>2. I forgot to draw the relationship between weather and airports. What is the relationship and how should it appear in the diagram?</strong></p>
 <p>The weather and flights tables are directly linked in year, month, day, hour, and origin.</p>
 <p><strong>3. weather only contains information for the origin (NYC) airports. If it contained weather records for all airports in the USA, what additional relation would it define with flights?</strong></p>
-<p>If weather contained information for all of the airports in the US there would also be a relationship between weather origin and fligths destination.</p>
+<p>If weather contained information for all of the airports in the US there would also be a relationship between weather origin and flights destination.</p>
 <p><strong>4. We know that some days of the year are “special”, and fewer people than usual fly on them. How might you represent that data as a data frame? What would be the primary keys of that table? How would it connect to the existing tables?</strong></p>
 <pre class="r"><code>(daily &lt;- flights %&gt;% 
   unite(cal_day, year, month, day) %&gt;%

@@ -14,10 +14,10 @@ library(nycflights13)
 ### 12.5 Missing Values
 
 **1. Compare and contrast the fill arguments to spread() and complete()**  
-Fill recognizes explictly missing values and fills them with the last non-missing value. Complete recognizes implicitly missing values and creates a data frame that presents them explicitly. Spread changes the organization of values in the table, which can make implicitly missing values explicitly missing if the correct variables are used to identify the data. 
+Fill recognizes explictly missing values and fills them with the last non-missing value. Complete recognizes implicitly missing values and creates a data frame that presents them explicitly. Spread changes the organization of values in the table, which can make implicitly missing values explicit if the correct variables are used to identify the data. 
 
 **2. What does the direction argument to fill() do?**  
-The .direction argument indicates weather the non-missing value above or below the missing values should be used to fill the data frame.  
+The .direction argument indicates wether the non-missing value above or below the missing values should be used to fill the data frame.  
 ```{r}
 treatment <- tribble(
   ~ person,           ~ treatment, ~response,
@@ -36,8 +36,9 @@ treatment %>%
 
 **1. In this case study I set na.rm = TRUE just to make it easier to check that we had the correct values. Is this reasonable? Think about how missing values are represented in this dataset. Are there implicit missing values? What’s the difference between an NA and zero?**  
 
-In this data frame, NAs represent explicit missing value. Excluding them from our tidy data is reasonable for data analysis, however it creates implicit missing data in out tidy data set.
-Implicit missing values would occur if a "code" combination was missing from the original data set. NAs and zeros represent different values in this data set. A zero explicitly indicates that no cases were observed for this "code", while a NA indicates that the data was not record.
+In this data frame, NAs represent explicit missing value. Excluding them from our tidy data is reasonable for data analysis, however it creates implicit missing data in our tidy data set.  
+Implicit missing values would occur in the original data set if a "code" combination was missing.  
+NAs and zeros represent different values in this data set. A zero explicitly indicates that no cases were observed for this "code", while a NA indicates that the data was not record.
 
 **2. What happens if you neglect the mutate() step? (mutate(key = stringr::str_replace(key, "newrel", "new_rel")))**
 
@@ -45,12 +46,6 @@ The mutate step facilitates complete and uniform separate() steps in subsequent 
 
 **3. I claimed that iso2 and iso3 were redundant with country. Confirm this claim.**
 
-```{r}
-who %>% 
-  select(country, iso2, iso3) %>%
-  distinct() %>% 
-  count(iso2)
-```
 
 **4. For each country, year, and sex compute the total number of cases of TB. Make an informative visualisation of the data.**  
 
@@ -105,7 +100,7 @@ who_tidy %>%
 
 **1. Imagine you wanted to draw (approximately) the route each plane flies from its origin to its destination. What variables would you need? What tables would you need to combine?**
 
-flights: tailum, origin, dest
+flights: tailnum, origin, dest  
 airports: faa (link to origin and dest), lat, lon
 
 **2. I forgot to draw the relationship between weather and airports. What is the relationship and how should it appear in the diagram?**
@@ -114,7 +109,7 @@ The weather and flights tables are directly linked in year, month, day, hour, an
 
 **3. weather only contains information for the origin (NYC) airports. If it contained weather records for all airports in the USA, what additional relation would it define with flights?**
 
-If weather contained information for all of the airports in the US there would also be a relationship between weather origin and fligths destination.
+If weather contained information for all of the airports in the US there would also be a relationship between weather origin and flights destination.
 
 **4. We know that some days of the year are “special”, and fewer people than usual fly on them. How might you represent that data as a data frame? What would be the primary keys of that table? How would it connect to the existing tables?**
 
