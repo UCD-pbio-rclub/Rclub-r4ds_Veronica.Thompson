@@ -1,0 +1,53 @@
+---
+title: "Relational_data"
+author: "Veronica"
+date: "6/23/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(nycflights13)
+```
+
+### 13.3 Keys
+
+**1. Add a surrogate key to flights.**  
+```{r}
+flights %>% 
+  mutate(ID = row_number()) %>% 
+  summary()
+```
+
+**2. Identify the keys in the following datasets:**  
+```{r}
+Lahman::Batting %>% 
+  count(playerID, yearID, stint) %>% 
+  filter(n>1)
+
+#babynames::babynames %>% 
+#  count(year, sex, name) %>% 
+#  filter(n>1)
+
+nasaweather::atmos %>% 
+  count(lat, long, year, month) %>% 
+  filter(n>1)
+
+fueleconomy::vehicles %>% 
+  count(id) %>% 
+  filter(n>1)
+
+#ggplot2::diamonds 
+#There is no key
+```
+
+**3. Draw a diagram illustrating the connections between the Batting, Master, and Salaries tables in the Lahman package. Draw another diagram that shows the relationship between Master, Managers, AwardsManagers.**
+
+**How would you characterise the relationship between the Batting, Pitching, and Fielding tables?**
+
+
+ 
+
+
+

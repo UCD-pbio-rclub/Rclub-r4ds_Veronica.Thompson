@@ -14,7 +14,8 @@ library(nycflights13)
 ### 12.5 Missing Values
 
 **1. Compare and contrast the fill arguments to spread() and complete()**  
-Fill recognizes explictly missing values and fills them with the last non-missing value. Complete recognizes implicitly missing values and creates a data frame that presents them explicitly. Spread changes the organization of values in the table, which can make implicitly missing values explicit if the correct variables are used to identify the data. 
+spread(), fill is the value used for missing data
+complete(), fills as indicated by column
 
 **2. What does the direction argument to fill() do?**  
 The .direction argument indicates wether the non-missing value above or below the missing values should be used to fill the data frame.  
@@ -32,7 +33,7 @@ treatment %>%
   fill(person, .direction = "up")
 ```  
 
-## 12.6 Case Study
+### 12.6 Case Study
 
 **1. In this case study I set na.rm = TRUE just to make it easier to check that we had the correct values. Is this reasonable? Think about how missing values are represented in this dataset. Are there implicit missing values? What’s the difference between an NA and zero?**  
 
@@ -127,7 +128,9 @@ If weather contained information for all of the airports in the US there would a
 (daily <- flights %>% 
   unite(cal_day, year, month, day) %>%
   group_by(cal_day) %>% 
-  summarise(count = n()))
+  summarise(count = n()) %>% 
+  arrange((count)) %>% 
+  head(30))
 summary(daily)
 ```
 
