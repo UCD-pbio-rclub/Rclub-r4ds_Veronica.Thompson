@@ -65,7 +65,7 @@ cat(str_wrap(thanks, width = 60, exdent = 2), "\n")
 cat(str_wrap(thanks, width = 0, exdent = 2), "\n")
 ```
 
-str_wrap() reformats the shape of a string, most notably in a long string. This might be helpful for formating something like a markdown file.
+str_wrap() reformats size of the space in which a string is written. This might be helpful for formating when building a webpage.
 
 **5. What does str_trim() do? What’s the opposite of str_trim()?**
 
